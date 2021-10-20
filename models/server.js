@@ -8,6 +8,7 @@ class Server {
         this.port = process.env.PORT
 
         this.paths = {
+            auth:                   '/api/auth',
             calendar:               '/api/calendar',
         }
 
@@ -31,6 +32,7 @@ class Server {
 
     routes(){
 
+        this.app.use( this.paths.auth,              require('../routes/auth') );
         this.app.use( this.paths.calendar,          require('../routes/calendar') );
         
     }
