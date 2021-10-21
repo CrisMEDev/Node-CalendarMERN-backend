@@ -1,7 +1,9 @@
 
 const Server = require('./server');
+const Usuario = require('./Usuario');
 
 module.exports = {
-    Server
+    Server,
+    Usuario
 }
 
