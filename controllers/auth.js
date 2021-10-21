@@ -102,11 +102,16 @@ const login = async( req = request, res = response ) => {
 
 }
 
-const renovarToken = ( req = request, res = response ) => {
+const renovarToken = async( req = request, res = response ) => {
+
+    const user = req.usuario;   // Se extre el usuario del token leído
+
+    // Generar JWT nuevamente
+    const token = await generarJWT( user.uid, user.name );
 
     res.status(201).json({
         ok: true,
-        msg: 'Hola desde renovar'
+        token
     });
 
 }
