@@ -1,37 +1,146 @@
 const { request, response } = require('express');
+const { Event } = require('../models/index');
 
+const obtenerEvents = async( req = request, res = response ) => {
 
-const obtenerEvents = ( req = request, res = response ) => {
+    try {
+        // TODO: Usar una variable estado para evitar el borrado y traer solo los estado true
+        const eventos = await Event.find()
+                                   .populate('user', ['_id', 'name']);
 
-    res.json({
-        msg: 'Hola mundo desde obtenerEvents'
-    });
+        res.status(200).json({
+            ok: true,
+            eventos
+        });
+        
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Algo salió mal, contacte al administrador'
+        });
+    }
     
 }
 
-const crearEvent = ( req = request, res = response ) => {
+const crearEvent = async( req = request, res = response ) => {
 
-    const { title, notes, start, end, user } = req.body;
+    
+    try {
+        const evento = Event( req.body );
+        
+        evento.user = req.usuario._id;
 
-    res.json({
-        msg: 'Hola mundo desde crearEvent'
-    });
+        const eventoGuardado = await evento.save();
+
+        res.status(201).json({
+            ok: true,
+            evento: eventoGuardado
+        });
+        
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Algo salió mal, contacte al administrador'
+        });
+    }
     
 }
 
-const actualizarEvent = ( req = request, res = response ) => {
+const actualizarEvent = async( req = request, res = response ) => {
 
-    res.json({
-        msg: 'Hola mundo desde actualizarEvent'
-    });
+    const eventoId = req.params.id;
+    const usuario = req.usuario;
+
+    try {
+        
+        // Verificar si existe el evento
+        const evento = await Event.findById( eventoId );
+
+        if ( !evento ){
+            return res.status(404).json({
+                ok: false,
+                msg: 'El evento con ese ID no existe'
+            });
+        }
+
+        // Comprobar que el evento pertenece al usuario
+        if ( evento.user.toString() !== usuario._id.toString() ){
+            return res.status(401).json({
+                ok: false,
+                msg: 'No tiene permisos para editar este evento'
+            });
+        }
+
+        // Actualizar el evento
+        const nuevoEvento = {
+            ...req.body,
+            user: usuario._id
+        }
+
+        const eventoActualizado = await Event.findByIdAndUpdate( eventoId, nuevoEvento, { new: true } );
+
+        res.status(200).json({
+            ok: false,
+            eventoActualizado
+        });
+        
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Algo salió mal, contacte al administrador'
+        });
+    }
     
 }
 
-const borrarEvent = ( req = request, res = response ) => {
+const borrarEvent = async( req = request, res = response ) => {
 
-    res.json({
-        msg: 'Hola mundo desde borrarEvent'
-    });
+    const eventoId = req.params.id;
+    const usuario = req.usuario;
+
+    try {
+        
+        // Verificar si existe el evento
+        const evento = await Event.findById( eventoId );
+
+        if ( !evento ){
+            return res.status(404).json({
+                ok: false,
+                msg: 'El evento con ese ID no existe'
+            });
+        }
+
+        // Comprobar que el evento pertenece al usuario
+        if ( evento.user.toString() !== usuario._id.toString() ){
+            return res.status(401).json({
+                ok: false,
+                msg: 'No tiene permisos para eliminar este evento'
+            });
+        }
+
+        // Borrar evento. TODO: Usar una variable estado para evitar el borrado de la DB
+        const eventoBorrado = await Event.findByIdAndDelete( eventoId );
+
+        res.status(200).json({
+            ok: true,
+            eventoBorrado
+        });
+
+        
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Algo salió mal, contacte al administrador'
+        });
+    }
     
 }
 

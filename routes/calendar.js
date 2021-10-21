@@ -27,6 +27,9 @@ router.post( '/', [
 
 router.put( '/:id', [
     check('id', 'El id no es válido').isMongoId(),
+    check('title', 'El título es obligatorio').notEmpty(),
+    check('start', 'La fecha de inicio es obligatoria y debe ser válida').custom( isDate ),
+    check('end', 'La fecha de finalización es obligatoria y debe ser válida').custom( isDate ),
     validarCampos
 ], actualizarEvent );
 
