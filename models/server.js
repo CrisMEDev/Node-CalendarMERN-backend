@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 
+const { dbConnection } = require('../database/config');
+
 class Server {
 
     constructor(){
@@ -12,9 +14,15 @@ class Server {
             calendar:               '/api/calendar',
         }
 
+        this.databaseConnection();
+
         this.middlewares();
 
         this.routes();
+    }
+
+    async databaseConnection(){
+        await dbConnection();
     }
     
     middlewares(){
