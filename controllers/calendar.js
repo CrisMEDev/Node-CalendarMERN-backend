@@ -11,6 +11,8 @@ const obtenerEvents = ( req = request, res = response ) => {
 
 const crearEvent = ( req = request, res = response ) => {
 
+    const { title, notes, start, end, user } = req.body;
+
     res.json({
         msg: 'Hola mundo desde crearEvent'
     });

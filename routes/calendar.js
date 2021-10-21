@@ -7,6 +7,7 @@ const {
     actualizarEvent,
     borrarEvent
 } = require('../controllers/calendar');
+const { isDate } = require('../helpers/isDate');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
@@ -17,7 +18,12 @@ router.use( validarJWT );
 
 router.get( '/', obtenerEvents );
 
-router.post( '/', crearEvent );
+router.post( '/', [
+    check('title', 'El título es obligatorio').notEmpty(),
+    check('start', 'La fecha de inicio es obligatoria y debe ser válida').custom( isDate ),
+    check('end', 'La fecha de finalización es obligatoria y debe ser válida').custom( isDate ),
+    validarCampos
+], crearEvent );
 
 router.put( '/:id', [
     check('id', 'El id no es válido').isMongoId(),

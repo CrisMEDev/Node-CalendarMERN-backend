@@ -10,3 +10,4 @@
 [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 [uuid](https://www.npmjs.com/package/uuid)
 [ODM Mongoose](https://mongoosejs.com/)
+[Moment js](https://momentjs.com/)
