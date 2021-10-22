@@ -106,13 +106,26 @@ const renovarToken = async( req = request, res = response ) => {
 
     const user = req.usuario;   // Se extre el usuario del token leído
 
-    // Generar JWT nuevamente
-    const token = await generarJWT( user._id, user.name );
+    try {
+        
+        // Generar JWT nuevamente
+        const token = await generarJWT( user._id, user.name );
+    
+        res.status(201).json({
+            ok: true,
+            token,
+            uid: user._id,
+            name: user.name
+        });
+    } catch (error) {
+        console.log(error);
 
-    res.status(201).json({
-        ok: true,
-        token
-    });
+        return res.status(500).json({
+            ok: false,
+            msg: 'Algo salió mal, contacte al administrador'
+        });
+    }
+
 
 }
 
