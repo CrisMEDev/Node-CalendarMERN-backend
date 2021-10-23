@@ -39,7 +39,7 @@ const createUser = async( req = request, res = response ) => {
         });
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).json({
             ok: false,
@@ -92,7 +92,7 @@ const login = async( req = request, res = response ) => {
         });
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).json({
             ok: false,
@@ -118,7 +118,7 @@ const renovarToken = async( req = request, res = response ) => {
             name: user.name
         });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).json({
             ok: false,

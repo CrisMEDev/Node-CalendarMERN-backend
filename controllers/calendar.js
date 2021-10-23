@@ -14,7 +14,7 @@ const obtenerEvents = async( req = request, res = response ) => {
         });
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).json({
             ok: false,
@@ -40,7 +40,7 @@ const crearEvent = async( req = request, res = response ) => {
         });
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).json({
             ok: false,
@@ -89,7 +89,7 @@ const actualizarEvent = async( req = request, res = response ) => {
         });
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).json({
             ok: false,
@@ -134,7 +134,7 @@ const borrarEvent = async( req = request, res = response ) => {
 
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
 
         return res.status(500).json({
             ok: false,
