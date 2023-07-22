@@ -1,5 +1,4 @@
 {
-   "framework": "node",
    "name": "calendar-backend",
    "builds": [
       {
